@@ -7,8 +7,9 @@ public class Reiziger extends Main{
     private String tussenvoegsel;
     private String achternaam;
     private java.sql.Date geboortedatum;
+    private Adres adres;
 
-    public Reiziger(int id, String vl, String tv, String an, java.sql.Date gb){
+    public Reiziger(int id, String vl, String tv, String an, Date gb){
         this.id = id;
         this.voorletters = vl;
         this.tussenvoegsel = tv;
@@ -56,14 +57,21 @@ public class Reiziger extends Main{
         this.geboortedatum = geboortedatum;
     }
 
+    public Adres getAdres() {
+        return adres;
+    }
+
+    public void setAdres(Adres adres) {
+        this.adres = adres;
+    }
+
     @Override
     public String toString() {
-        return "Reiziger{" +
-                "id=" + id +
-                ", voorletters='" + voorletters + '\'' +
-                ", tussenvoegsel='" + tussenvoegsel + '\'' +
-                ", achternaam='" + achternaam + '\'' +
-                ", geboortedatum=" + geboortedatum +
-                '}';
+        return "Reiziger_id = " + id + '\'' +
+                ", voorletters = '" + voorletters + '\'' +
+                ", tussenvoegsel = '" + tussenvoegsel + '\'' +
+                ", achternaam = '" + achternaam + '\'' +
+                ", geboortedatum = " + geboortedatum + '\'' +
+                ", adres = " + geboortedatum;
     }
 }

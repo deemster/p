@@ -120,4 +120,47 @@ public class ReizigerDAOsql implements  ReizigerDAO{
         }
         return personen;
     }
+
+    public Adres findByReiziger(Reiziger reiziger) {
+        try {
+            // find traveler by id using a prepareStatement
+            String q = "SELECT * FROM adres WHERE reiziger_id = ?;";
+            PreparedStatement pst = conn.prepareStatement(q);
+            pst.setInt(1, reiziger.getId());
+            ResultSet rs = pst.executeQuery();
+
+            Adres adres = null;
+
+            // add the address
+            while (rs.next())
+            {
+                int adresId = rs.getInt(1);
+                String postcode = rs.getString(2);
+                String huisnummer = rs.getString(3);
+                String straat = rs.getString(4);
+                String woonplaats = rs.getString(5);
+                int reizigerId = rs.getInt(6);
+
+                adres = new Adres(adresId, postcode, huisnummer, straat, woonplaats,reizigerId);
+            }
+
+            // close connections
+            rs.close();
+            pst.close();
+
+            return adres;
+        }
+        catch (SQLException sqlex) {
+            System.err.println("An error occurred while searching by id: " + sqlex.getMessage());
+        }
+        return null;
+    }
+
 }
+
+
+
+
+
+
+
