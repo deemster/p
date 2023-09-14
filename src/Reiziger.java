@@ -1,4 +1,5 @@
 import java.sql.Date;
+import java.util.List;
 
 
 public class Reiziger extends Main{
@@ -16,6 +17,9 @@ public class Reiziger extends Main{
         this.achternaam = an;
         this.geboortedatum = gb;
     }
+
+
+
 
     public int getId() {
         return id;
@@ -72,6 +76,6 @@ public class Reiziger extends Main{
                 ", tussenvoegsel = '" + tussenvoegsel + '\'' +
                 ", achternaam = '" + achternaam + '\'' +
                 ", geboortedatum = " + geboortedatum + '\'' +
-                ", adres = " + geboortedatum;
+                ", adres = " + adres;
     }
 }

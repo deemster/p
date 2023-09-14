@@ -13,7 +13,7 @@ public class Main {
         ReizigerDAOsql daOsql = new ReizigerDAOsql(conn);
         testReizigerDAO(daOsql);
         AdresDAOsql adaOsql = new AdresDAOsql(conn);
-        testadresDAO(adaOsql);
+        testadresDAO(adaOsql, daOsql);
         try {
             conn.close();
             if (conn.isClosed()) {
@@ -87,7 +87,7 @@ public class Main {
                 "" + keesie.getVoorletters() + " " + keesie.getTussenvoegsel() + " " + keesie.getAchternaam());
 
     }
-    private static void testadresDAO(AdresDAO adao) throws SQLException {
+    private static void testadresDAO(AdresDAO adao, ReizigerDAO rdao) throws SQLException {
         System.out.println("\n---------- Test AdresDAO -------------");
 
         List<Adres> adres = adao.findAll();
@@ -97,10 +97,16 @@ public class Main {
         }
         System.out.println();
 
-//        Adres ad = adao.findByReiziger();
-//        System.out.println("[Test] ReizigerDAO.findByGbDatum() geeft de volgende persoon:");
-//        System.out.println(reiziger);
-//        System.out.println();
+        System.out.println("[Test] AdresDAO.findByReiziger() geeft de volgende persoon:");
+        String geboorte = "2000-10-18";
+        int reizigerID = 123;
+        Reiziger frank = new Reiziger(reizigerID, "f", "op", "steeg", java.sql.Date.valueOf(geboorte));
+        rdao.save(frank);
+        int adresID = 678;
+        Adres zoutstraat = new Adres(adresID, "2435HJ", "10", "zoutstraat", "bergen op zoom", frank.getId());
+        adao.save(zoutstraat);
+        System.out.println(adao.findByReiziger(frank));
+
 
         Adres bergstraat = new Adres(6, "1563GG", "67", "bergstraat", "Zaandam", 8);
         System.out.print("[Test] Eerst " + adres.size() + " adressen, na AdresDAO.save() ");
@@ -132,6 +138,7 @@ public class Main {
         adao.update(krants);
         System.out.println("[Test] " + krantsteeg.getPostcode() + " " + krantsteeg.getHuisnummer() + " " + krantsteeg.getStraat()  + " " + krantsteeg.getReizigerId() + " is geupdate naar " +
                 " " + krants.getPostcode() + " " + krants.getHuisnummer() + " " + krants.getStraat() +  " " + krants.getReizigerId());
+
     }
 
 
