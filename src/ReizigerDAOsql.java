@@ -79,6 +79,7 @@ public class ReizigerDAOsql implements  ReizigerDAO{
             Date geboortedatum = alles.getDate("geboortedatum");
 
             reis = new Reiziger(ide, voorletters, tussenvoegsel, achternaam, geboortedatum);
+            reis.setAdres(adao.findByReiziger(reis));
         }
 
         return reis;
@@ -100,6 +101,7 @@ public class ReizigerDAOsql implements  ReizigerDAO{
             Date geboortedatum = alles.getDate("geboortedatum");
 
             Reiziger reiziger = new Reiziger(id, voorletters, tussenvoegsel, achternaam, geboortedatum);
+            reiziger.setAdres(adao.findByReiziger(reiziger));
             personen.add(reiziger);
         }
         return personen;
