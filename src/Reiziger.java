@@ -8,13 +8,16 @@ public class Reiziger extends Main{
     private String achternaam;
     private java.sql.Date geboortedatum;
     private Adres adres;
+    private OVChipkaart ovChipkaart;
+    private int kaartNum;
 
-    public Reiziger(int id, String vl, String tv, String an, Date gb){
+    public Reiziger(int id, String vl, String tv, String an, Date gb, int kn){
         this.id = id;
         this.voorletters = vl;
         this.tussenvoegsel = tv;
         this.achternaam = an;
         this.geboortedatum = gb;
+        this.kaartNum = kn;
     }
 
     public int getId() {
@@ -65,13 +68,30 @@ public class Reiziger extends Main{
         this.adres = adres;
     }
 
+    public OVChipkaart getOvChipkaart() {
+        return ovChipkaart;
+    }
+
+    public void setOvChipkaart(OVChipkaart ovChipkaart) {
+        this.ovChipkaart = ovChipkaart;
+    }
+
+    public int getKaartNum() {
+        return kaartNum;
+    }
+
+    public void setKaartNum(int kaartNum) {
+        this.kaartNum = kaartNum;
+    }
+
     @Override
     public String toString() {
         return "Reiziger_id = " + id + '\'' +
                 ", voorletters = '" + voorletters + '\'' +
                 ", tussenvoegsel = '" + tussenvoegsel + '\'' +
                 ", achternaam = '" + achternaam + '\'' +
-                ", geboortedatum = " + geboortedatum + '\'' +
-                ", adres = " + geboortedatum;
+                ", geboortedatum = " + geboortedatum + '\n' +
+                ", adres = " + adres + '\n' +
+                ", Ovchipkaart = " + ovChipkaart;
     }
 }

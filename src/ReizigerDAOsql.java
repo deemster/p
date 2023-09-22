@@ -4,11 +4,15 @@ import java.util.List;
 
 public class ReizigerDAOsql implements  ReizigerDAO{
     private Connection conn;
+    private final AdresDAOsql adao;
+//    private final OVChipkaartDAOsql odao;
 
 
 
     public ReizigerDAOsql(Connection conn) throws SQLException {
         this.conn = conn;
+        this.adao = new AdresDAOsql(conn);
+//        this.odao = new OVChipkaartDAOsql(conn);
     }
 
     @Override
@@ -75,8 +79,11 @@ public class ReizigerDAOsql implements  ReizigerDAO{
             String tussenvoegsel = alles.getString("tussenvoegsel");
             String achternaam = alles.getString("achternaam");
             Date geboortedatum = alles.getDate("geboortedatum");
+            int kaartnum = alles.getInt("kaartnummer");
 
-            reis = new Reiziger(ide, voorletters, tussenvoegsel, achternaam, geboortedatum);
+            reis = new Reiziger(ide, voorletters, tussenvoegsel, achternaam, geboortedatum, kaartnum);
+            reis.setAdres(adao.findByReiziger(reis));
+//            reis.setOvChipkaart(odao.findByReiziger(reis));
         }
 
         return reis;
@@ -96,8 +103,11 @@ public class ReizigerDAOsql implements  ReizigerDAO{
             String tussenvoegsel = alles.getString("tussenvoegsel");
             String achternaam = alles.getString("achternaam");
             Date geboortedatum = alles.getDate("geboortedatum");
+            int kaartnum = alles.getInt("kaartnummer");
 
-            Reiziger reiziger = new Reiziger(id, voorletters, tussenvoegsel, achternaam, geboortedatum);
+            Reiziger reiziger = new Reiziger(id, voorletters, tussenvoegsel, achternaam, geboortedatum, kaartnum);
+            reiziger.setAdres(adao.findByReiziger(reiziger));
+//            reiziger.setOvChipkaart(odao.findByReiziger(reiziger));
             personen.add(reiziger);
         }
         return personen;
@@ -114,53 +124,41 @@ public class ReizigerDAOsql implements  ReizigerDAO{
             String tussenvoegsel = alles.getString("tussenvoegsel");
             String achternaam = alles.getString("achternaam");
             Date geboortedatum = alles.getDate("geboortedatum");
+            int kaartnum = alles.getInt("kaartnummer");
 
-            Reiziger reiziger = new Reiziger(id, voorletters, tussenvoegsel, achternaam, geboortedatum);
+            Reiziger reiziger = new Reiziger(id, voorletters, tussenvoegsel, achternaam, geboortedatum, kaartnum);
+            reiziger.setAdres(adao.findByReiziger(reiziger));
+//            reiziger.setOvChipkaart(odao.findByReiziger(reiziger));
             personen.add(reiziger);
         }
         return personen;
     }
 
-    public Adres findByReiziger(Reiziger reiziger) {
+    @Override
+    public Reiziger findByChipkaart(OVChipkaart ovChipkaart) throws SQLException{
         try {
-            // find traveler by id using a prepareStatement
-            String q = "SELECT * FROM adres WHERE reiziger_id = ?;";
-            PreparedStatement pst = conn.prepareStatement(q);
-            pst.setInt(1, reiziger.getId());
-            ResultSet rs = pst.executeQuery();
+            PreparedStatement findbyovchip = conn.prepareStatement("SELECT * FROM  ov_chipkaart WHERE reiziger_id=?");
+            findbyovchip.setInt(1, ovChipkaart.getReizigerId());
+            ResultSet resultSet = findbyovchip.executeQuery();
+            Reiziger reiziger = null;
+            while (resultSet.next()){
+                int id = resultSet.getInt(1);
+                String voorletter = resultSet.getString(2);
+                String tussenvoegsel = resultSet.getString(3);
+                String achternaam = resultSet.getString(4);
+                Date geboortedatum = resultSet.getDate(5);
+                int kaartnummer = resultSet.getInt(6);
 
-            Adres adres = null;
-
-            // add the address
-            while (rs.next())
-            {
-                int adresId = rs.getInt(1);
-                String postcode = rs.getString(2);
-                String huisnummer = rs.getString(3);
-                String straat = rs.getString(4);
-                String woonplaats = rs.getString(5);
-                int reizigerId = rs.getInt(6);
-
-                adres = new Adres(adresId, postcode, huisnummer, straat, woonplaats,reizigerId);
+                reiziger = new Reiziger(id, voorletter, tussenvoegsel, achternaam, geboortedatum, kaartnummer);
             }
+            resultSet.close();
+            findbyovchip.close();
 
-            // close connections
-            rs.close();
-            pst.close();
-
-            return adres;
-        }
-        catch (SQLException sqlex) {
-            System.err.println("An error occurred while searching by id: " + sqlex.getMessage());
+            return reiziger;
+        } catch (SQLException sq) {
+            System.err.println("verkeerde sql " + sq.getMessage());
         }
         return null;
     }
 
 }
-
-
-
-
-
-
-

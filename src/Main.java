@@ -54,7 +54,8 @@ public class Main {
         System.out.println();
 
         String gbdatum = "1981-03-14";
-        Reiziger sietske =  new Reiziger(77, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
+
+        Reiziger sietske =  new Reiziger(77, "S", "", "Boers", java.sql.Date.valueOf(gbdatum), 94568);
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
         rdao.save(sietske);
         reizigers = rdao.findAll();
@@ -63,7 +64,7 @@ public class Main {
 
         // hieronder maak ik een nieuw persoon aan zodat ik mijn delete kan testen
         String gebdatum = "2000-04-14";
-        Reiziger jan = new Reiziger(7, "j", "van de", "berg", java.sql.Date.valueOf(gebdatum));
+        Reiziger jan = new Reiziger(7, "j", "van de", "berg", java.sql.Date.valueOf(gebdatum), 88573);
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
         rdao.save(jan);
         reizigers = rdao.findAll();
@@ -76,14 +77,14 @@ public class Main {
         // hieronder maak ik een nieuw persoon aan. vervolgens update ik dees via de update methode in de ReizigerDAOsql classen
 
         String geboortedatum = "2000-04-12";
-        Reiziger kees = new Reiziger(8, "k", "", "mees", java.sql.Date.valueOf(geboortedatum));
+        Reiziger kees = new Reiziger(8, "k", "", "mees", java.sql.Date.valueOf(geboortedatum),46392 );
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
         rdao.save(kees);
         reizigers = rdao.findAll();
         System.out.println(reizigers.size() + " reizigers\n");
 
         int id = 8;
-        Reiziger keesie = new Reiziger(id, "k", "van", "huizen", java.sql.Date.valueOf(geboortedatum));
+        Reiziger keesie = new Reiziger(id, "k", "van", "huizen", java.sql.Date.valueOf(geboortedatum), 18326);
         rdao.update(keesie);
         System.out.println("[Test] " + kees.getVoorletters() + " " + kees.getTussenvoegsel() + " " + kees.getAchternaam() + " is geupdate naar: " +
                 "" + keesie.getVoorletters() + " " + keesie.getTussenvoegsel() + " " + keesie.getAchternaam());
@@ -101,7 +102,7 @@ public class Main {
         System.out.println("[Test] AdresDAO.findByReiziger() geeft de volgende persoon:");
         String geboorte = "2000-10-18";
         int reizigerID = 123;
-        Reiziger frank = new Reiziger(reizigerID, "f", "op", "steeg", java.sql.Date.valueOf(geboorte));
+        Reiziger frank = new Reiziger(reizigerID, "f", "op", "steeg", java.sql.Date.valueOf(geboorte), 67568);
         rdao.save(frank);
         int adresID = 678;
         Adres zoutstraat = new Adres(adresID, "2435HJ", "10", "zoutstraat", "bergen op zoom", frank.getId());
@@ -152,7 +153,7 @@ public class Main {
         System.out.println("[Test] OVChipkaartDAO.findByReiziger() geeft de volgende chipkaart:");
         String geboorte = "2000-10-18";
         int reizigerID = 101;
-        Reiziger kees = new Reiziger(reizigerID, "k", "van", "de steen", java.sql.Date.valueOf(geboorte));
+        Reiziger kees = new Reiziger(reizigerID, "k", "van", "de steen", java.sql.Date.valueOf(geboorte), 57401);
         rdao.save(kees);
         int ovkaartnum = 34567;
         OVChipkaart ovkaart = new OVChipkaart(ovkaartnum, java.sql.Date.valueOf("2024-10-10"), 2, 20, kees.getId());

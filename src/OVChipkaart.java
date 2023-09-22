@@ -6,6 +6,8 @@ public class OVChipkaart {
     private int klasse;
     private int saldo;
     private int reizigerId;
+    private Reiziger reiziger;
+
 
     public OVChipkaart(int kn, java.sql.Date gt, int ks, int sa, int rid){
         this.kaartNummer = kn;
@@ -55,6 +57,14 @@ public class OVChipkaart {
         this.reizigerId = reizigerId;
     }
 
+    public Reiziger getReiziger() {
+        return reiziger;
+    }
+
+    public void setReiziger(Reiziger reiziger) {
+        this.reiziger = reiziger;
+    }
+
     @Override
     public String toString() {
         return "OVChipkaart{" +
@@ -62,7 +72,7 @@ public class OVChipkaart {
                 ", geldigTot=" + geldigTot +
                 ", klasse=" + klasse +
                 ", saldo=" + saldo +
-                ", reizigerId=" + reizigerId +
+                ", reiziger=" + reiziger +
                 '}';
     }
 }

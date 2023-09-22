@@ -5,10 +5,10 @@ import java.util.List;
 public class OVChipkaartDAOsql implements OVChipkaartDAO{
     Connection conn;
 
+
     public OVChipkaartDAOsql(Connection conn) throws SQLException{
         this.conn = conn;
     }
-
     @Override
     public boolean save(OVChipkaart ovchipkaart) throws SQLException{
         boolean uitvoer = false;
@@ -67,7 +67,7 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO{
             PreparedStatement findbyreiziger = conn.prepareStatement("SELECT * FROM ov_chipkaart WHERE reiziger_id = ?;");
             findbyreiziger.setInt(1, reiziger.getId());
             ResultSet resultSet = findbyreiziger.executeQuery();
-
+            ReizigerDAOsql rdao = new ReizigerDAOsql(conn);
             OVChipkaart ovchipkaart = null;
             while (resultSet.next()){
                 int kaartnummer = resultSet.getInt(1);
@@ -77,6 +77,7 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO{
                 int reizigerid = resultSet.getInt(5);
 
                 ovchipkaart = new OVChipkaart(kaartnummer, geldigtot, klasse, saldo, reizigerid);
+                ovchipkaart.setReiziger(rdao.findById(reizigerid));
             }
             resultSet.close();
             findbyreiziger.close();
@@ -93,6 +94,7 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO{
         List<OVChipkaart> ovchipkaarten = new ArrayList<>();
         PreparedStatement ovchipkaart = conn.prepareStatement("SELECT * from ov_chipkaart");
         ResultSet resultSet = ovchipkaart.executeQuery();
+        ReizigerDAOsql rdao = new ReizigerDAOsql(conn);
         while (resultSet.next()){
             int kaartnummer = resultSet.getInt(1);
             Date geldigtot = resultSet.getDate(2);
@@ -101,6 +103,8 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO{
             int reizigerid = resultSet.getInt(5);
 
             OVChipkaart ovchip = new OVChipkaart(kaartnummer, geldigtot, klasse, saldo, reizigerid);
+            ovchip.setReiziger(rdao.findById(reizigerid));
+
             ovchipkaarten.add(ovchip);
         }
         return ovchipkaarten;

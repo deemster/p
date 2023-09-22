@@ -8,4 +8,5 @@ public interface ReizigerDAO {
     public Reiziger findById(int id)throws SQLException;
     public List<Reiziger> findByGbDatum(String datum)throws SQLException;
     public List<Reiziger> findAll()throws SQLException;
+    public Reiziger findByChipkaart(OVChipkaart ovChipkaart) throws SQLException;
 }
