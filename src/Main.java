@@ -15,6 +15,8 @@ public class Main {
         AdresDAOsql adaOsql = new AdresDAOsql(conn);
         testadresDAO(adaOsql, daOsql);
         OVChipkaartDAOsql odaOsql = new OVChipkaartDAOsql(conn);
+        testOVChipDAO(odaOsql, daOsql);
+
 //        tes
         try {
             conn.close();
@@ -27,8 +29,6 @@ public class Main {
         }
 
     }
-
-
 
     private static void testReizigerDAO(ReizigerDAO rdao) throws SQLException {
         System.out.println("\n---------- Test ReizigerDAO -------------");
@@ -140,55 +140,55 @@ public class Main {
                 " " + krants.getPostcode() + " " + krants.getHuisnummer() + " " + krants.getStraat() +  " " + krants.getReizigerId());
     }
 
-//    private static void testadresDAO(AdresDAO adao, ReizigerDAO rdao) throws SQLException {
-//        System.out.println("\n---------- Test AdresDAO -------------");
-//
-//        List<Adres> adres = adao.findAll();
-//        System.out.println("[Test] AdresDAO.findAll() geeft de volgende adressen:");
-//        for (Adres a : adres) {
-//            System.out.println(a);
-//        }
-//        System.out.println();
-//        System.out.println("[Test] AdresDAO.findByReiziger() geeft de volgende persoon:");
-//        String geboorte = "2000-10-18";
-//        int reizigerID = 123;
-//        Reiziger frank = new Reiziger(reizigerID, "f", "op", "steeg", java.sql.Date.valueOf(geboorte));
-//        rdao.save(frank);
-//        int adresID = 678;
-//        Adres zoutstraat = new Adres(adresID, "2435HJ", "10", "zoutstraat", "bergen op zoom", frank.getId());
-//        adao.save(zoutstraat);
-//        System.out.println(adao.findByReiziger(frank));
-//
-//        Adres bergstraat = new Adres(6, "1563GG", "67", "bergstraat", "Zaandam", 8);
-//        System.out.print("[Test] Eerst " + adres.size() + " adressen, na AdresDAO.save() ");
-//        adao.save(bergstraat);
-//        adres = adao.findAll();
-//        System.out.println(adres.size() + " adressen\n");
-//
-//        // hieronder maak ik een nieuw adres aan zodat ik mijn delete kan testen
-//
-//        Adres volkweg = new Adres(7, "1367KL", "13", "volkweg", "alkmaar", 77);
-//        System.out.print("[Test] Eerst " + adres.size() + " adressen, na AdresDAO.save() ");
-//        adao.save(volkweg);
-//        adres = adao.findAll();
-//        System.out.println(adres.size() + " adressen\n");
-//
-//        System.out.println("[Test] " + volkweg.getPostcode() + " " + volkweg.getHuisnummer() + " "  + volkweg.getStraat() + " is verwijderd  ");
-//
-//        adao.delete(volkweg);
-//
-//
-//        Adres krantsteeg = new Adres(8, "3214QG", "23", "krantsteeg", "haarlem", 5);
-//        System.out.print("[Test] Eerst " + adres.size() + " adressen, na AdresDAO.save() ");
-//        adao.save(krantsteeg);
-//        adres = adao.findAll();
-//        System.out.println(adres.size() + " adressen\n");
-//
-//        int id = 8;
-//        Adres krants = new Adres(id, "3215QG", "24", "krantsteeg", "haarlem", 4);
-//        adao.update(krants);
-//        System.out.println("[Test] " + krantsteeg.getPostcode() + " " + krantsteeg.getHuisnummer() + " " + krantsteeg.getStraat()  + " " + krantsteeg.getReizigerId() + " is geupdate naar " +
-//                " " + krants.getPostcode() + " " + krants.getHuisnummer() + " " + krants.getStraat() +  " " + krants.getReizigerId());
-//    }
+    private static void testOVChipDAO(OVChipkaartDAO odao, ReizigerDAO rdao) throws SQLException {
+        System.out.println("\n---------- Test testOVChipDAO -------------");
+
+        List<OVChipkaart> ovchipkaart = odao.findAll();
+        System.out.println("[Test] OVChipkaartDAO.findAll() geeft de volgende chipkaart:");
+        for (OVChipkaart o : ovchipkaart) {
+            System.out.println(o);
+        }
+        System.out.println();
+        System.out.println("[Test] OVChipkaartDAO.findByReiziger() geeft de volgende chipkaart:");
+        String geboorte = "2000-10-18";
+        int reizigerID = 101;
+        Reiziger kees = new Reiziger(reizigerID, "k", "van", "de steen", java.sql.Date.valueOf(geboorte));
+        rdao.save(kees);
+        int ovkaartnum = 34567;
+        OVChipkaart ovkaart = new OVChipkaart(ovkaartnum, java.sql.Date.valueOf("2024-10-10"), 2, 20, kees.getId());
+        odao.save(ovkaart);
+        System.out.println(odao.findByReiziger(kees));
+
+
+        OVChipkaart ovChipkaart = new OVChipkaart(67568, java.sql.Date.valueOf("2024-11-20"), 1, 0, 5);
+        System.out.print("[Test] Eerst " + ovchipkaart.size() + " kaarten, na OVChipkaartDAO.save() ");
+        odao.save(ovChipkaart);
+        ovchipkaart = odao.findAll();
+        System.out.println(ovchipkaart.size() + " kaarten\n");
+
+        // hieronder maak ik een nieuw adres aan zodat ik mijn delete kan testen
+
+        OVChipkaart kaart = new OVChipkaart(38290, java.sql.Date.valueOf("2025-07-14"), 1, 50, 77);
+        System.out.print("[Test] Eerst " + ovchipkaart.size() + " kaarten, na OVChipkaartDAO.delete() ");
+        odao.save(kaart);
+        ovchipkaart = odao.findAll();
+        System.out.println(ovchipkaart.size() + " adressen\n");
+
+        System.out.println("[Test] " + kaart.getKaartNummer() + " " + kaart.getKlasse() + " "  + kaart.getSaldo() + " is verwijderd  ");
+
+        odao.delete(kaart);
+
+
+        OVChipkaart kaartje = new OVChipkaart(88573, java.sql.Date.valueOf("2030-12-12"), 2, 10, 8);
+        System.out.print("[Test] Eerst " + ovchipkaart.size() + " kaarten, na OVChipkaartDAO.save() ");
+        odao.save(kaartje);
+        ovchipkaart = odao.findAll();
+        System.out.println(ovchipkaart.size() + " kaarten\n");
+
+        OVChipkaart kaarte = new OVChipkaart(88573, java.sql.Date.valueOf("2033-12-31"), 2, 50, 8);
+        odao.update(kaarte);
+        System.out.println("[Test] " + kaartje.getKaartNummer() + " " + kaartje.getGeldigTot() + " " + kaartje.getKlasse()  + " " + kaartje.getSaldo() + " is geupdate naar " +
+                " " + kaarte.getKaartNummer() + " " + kaarte.getGeldigTot() + " " + kaarte.getKlasse()  + " " + kaarte.getSaldo());
+    }
 
 }
