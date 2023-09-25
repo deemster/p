@@ -1,4 +1,6 @@
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Reiziger extends Main{
@@ -8,16 +10,14 @@ public class Reiziger extends Main{
     private String achternaam;
     private java.sql.Date geboortedatum;
     private Adres adres;
-    private OVChipkaart ovChipkaart;
-    private int kaartNum;
+    private List<OVChipkaart> ovChipkaarten = new ArrayList<>();
 
-    public Reiziger(int id, String vl, String tv, String an, Date gb, int kn){
+    public Reiziger(int id, String vl, String tv, String an, Date gb){
         this.id = id;
         this.voorletters = vl;
         this.tussenvoegsel = tv;
         this.achternaam = an;
         this.geboortedatum = gb;
-        this.kaartNum = kn;
     }
 
     public int getId() {
@@ -68,21 +68,14 @@ public class Reiziger extends Main{
         this.adres = adres;
     }
 
-    public OVChipkaart getOvChipkaart() {
-        return ovChipkaart;
+    public List<OVChipkaart> getOvChipkaart() {
+        return ovChipkaarten;
     }
 
-    public void setOvChipkaart(OVChipkaart ovChipkaart) {
-        this.ovChipkaart = ovChipkaart;
+    public void setOvChipkaart(List<OVChipkaart> ovChipkaart) {
+        this.ovChipkaarten = ovChipkaart;
     }
 
-    public int getKaartNum() {
-        return kaartNum;
-    }
-
-    public void setKaartNum(int kaartNum) {
-        this.kaartNum = kaartNum;
-    }
 
     @Override
     public String toString() {
@@ -91,7 +84,6 @@ public class Reiziger extends Main{
                 ", tussenvoegsel = '" + tussenvoegsel + '\'' +
                 ", achternaam = '" + achternaam + '\'' +
                 ", geboortedatum = " + geboortedatum + '\n' +
-                ", adres = " + adres + '\n' +
-                ", Ovchipkaart = " + ovChipkaart;
+                ", adres = " + adres + '\n';
     }
 }
