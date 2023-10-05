@@ -13,9 +13,12 @@ public class Main {
         ReizigerDAOsql daOsql = new ReizigerDAOsql(conn);
         OVChipkaartDAOsql odaOsql = new OVChipkaartDAOsql(conn);
         AdresDAOsql adaOsql = new AdresDAOsql(conn);
+        ProductDAOsql pdaOsql = new ProductDAOsql(conn);
         testReizigerDAO(daOsql, odaOsql);
         testadresDAO(adaOsql, daOsql);
         testOVChipDAO(odaOsql, daOsql);
+        testProductDAO(pdaOsql);
+
 
 //        tes
         try {
@@ -193,6 +196,56 @@ public class Main {
         odao.update(kaarte);
         System.out.println("[Test] " + kaartje.getKaartNummer() + " " + kaartje.getGeldigTot() + " " + kaartje.getKlasse()  + " " + kaartje.getSaldo() + " is geupdate naar " +
                 " " + kaarte.getKaartNummer() + " " + kaarte.getGeldigTot() + " " + kaarte.getKlasse()  + " " + kaarte.getSaldo());
+    }
+    private static void testProductDAO(ProductDAOsql pdaOsql) throws SQLException {
+        System.out.println("\n---------- Test testOVChipDAO -------------");
+
+        List<Product> producten = pdaOsql.findAll();
+        System.out.println("[Test] ProductDAO.findAll() geeft de volgende producten:");
+        for (Product p : producten) {
+            System.out.println(p);
+        }
+        System.out.println();
+//        System.out.println("[Test] ProductDAO.findByReiziger() geeft de volgende chipkaart:");
+//        String geboorte = "2000-10-18";
+//        int reizigerID = 101;
+//        Reiziger kees = new Reiziger(reizigerID, "k", "van", "de steen", java.sql.Date.valueOf(geboorte));
+//        rdao.save(kees);
+//        int ovkaartnum = 34567;
+//        OVChipkaart ovkaart = new OVChipkaart(ovkaartnum, java.sql.Date.valueOf("2024-10-10"), 2, 20, kees.getId());
+//        odao.save(ovkaart);
+//        System.out.println(odao.findByReiziger(kees));
+//
+
+        Product product = new Product(20, "voordeelprod", "goedkoopste product op de markt", 20.00);
+        System.out.print("[Test] Eerst " + producten.size() + " producten, na ProductDAO.save() ");
+        pdaOsql.save(product);
+        producten = pdaOsql.findAll();
+        System.out.println(producten.size() + " producten\n");
+
+        // hieronder maak ik een nieuw adres aan zodat ik mijn delete kan testen
+
+        Product proddel = new Product(21, "duur", "dit is echt heel duur", 30.00);
+        System.out.print("[Test] Eerst " + producten.size() + " producten, na ProductDAO.delete() ");
+        pdaOsql.save(proddel);
+        producten = pdaOsql.findAll();
+        System.out.println(producten.size() + " producten\n");
+
+        System.out.println("[Test] " + proddel.getId() + " " + proddel.getNaam() + " "  + proddel.getBeschrijving() + " " + proddel.getPrijs() + " is verwijderd  ");
+
+        pdaOsql.delete(proddel);
+
+
+        Product prodnieuw = new Product(22, "niet zo duur", "deze valt wel mee", 25.50);
+        System.out.print("[Test] Eerst " + producten.size() + " producten, na ProductDAO.save() ");
+        pdaOsql.save(prodnieuw);
+        producten = pdaOsql.findAll();
+        System.out.println(producten.size() + " kaarten\n");
+
+        Product produp = new Product(22, "oke dit is duur jemig", "de naam zegt denk ik al genoeg", 60.00);
+        pdaOsql.update(produp);
+        System.out.println("[Test] " + prodnieuw.getId() + " " + prodnieuw.getNaam() + " " + prodnieuw.getBeschrijving()  + " " + prodnieuw.getPrijs() + " is geupdate naar " +
+                " " + produp.getId() + " " + produp.getNaam() + " " + produp.getBeschrijving()  + " " + produp.getPrijs());
     }
 
 }

@@ -18,12 +18,13 @@ public class ReizigerDAOsql implements  ReizigerDAO {
     public boolean save(Reiziger reiziger) throws SQLException {
         boolean uitvoer = false;
         try {
-            PreparedStatement save = conn.prepareStatement("INSERT INTO reiziger VALUES(?, ?, ?, ?, ?)");
+            PreparedStatement save = conn.prepareStatement("INSERT INTO reiziger VALUES(?, ?, ?, ?, ?, ?)");
             save.setInt(1, reiziger.getId());
             save.setString(2, reiziger.getVoorletters());
             save.setString(3, reiziger.getTussenvoegsel());
             save.setString(4, reiziger.getAchternaam());
             save.setObject(5, reiziger.getGeboortedatum());
+            save.setObject(6, reiziger.getAdres());
             save.executeUpdate();
             uitvoer = true;
             for (OVChipkaart o : reiziger.getOvChipkaart()) {
