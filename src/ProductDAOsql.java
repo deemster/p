@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,19 @@ public class ProductDAOsql implements ProductDAO{
             save.setString(3, product.getBeschrijving());
             save.setDouble(4, product.getPrijs());
             save.executeUpdate();
+
+            PreparedStatement saveovprod = conn.prepareStatement("INSERT INTO ov_chipkaart_product VALUES(?, ?, ?, )");
+            System.out.println(product.getOvChipkaarten());
+            for (OVChipkaart ovChipkaart: product.getOvChipkaarten()){
+                saveovprod.setInt(1, ovChipkaart.getKaartNummer());
+                saveovprod.setInt(2, product.getId());
+                saveovprod.setString(3,"gekocht");
+                saveovprod.setDate(4, java.sql.Date.valueOf(LocalDate.now()));
+                saveovprod.executeUpdate();
+            }
             uitvoer = true;
+
+
 
         }  catch (SQLException sq){
             System.err.println("verkeerde sql " + sq.getMessage());
@@ -56,7 +69,13 @@ public class ProductDAOsql implements ProductDAO{
             PreparedStatement delete = conn.prepareStatement("DELETE FROM product WHERE product_nummer=?");
             delete.setObject(1, product.getId());
             delete.executeUpdate();
+
+            PreparedStatement delovprod = conn.prepareStatement("DELETE FROM ov_chipkaart_product WHERE product_nummer=?");
+            delete.setObject(1, product.getId());
+            delete.executeUpdate();
+            delovprod.executeUpdate();
             uitvoer = true;
+
         } catch (SQLException sq){
             System.err.println("verkeerde sql " + sq.getMessage());
         }

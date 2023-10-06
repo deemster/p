@@ -57,6 +57,14 @@ public class Product {
         this.prijs = prijs;
     }
 
+    public List<OVChipkaart> getOvChipkaarten() {
+        return ovChipkaarten;
+    }
+
+    public void setOvChipkaarten(List<OVChipkaart> ovChipkaarten) {
+        this.ovChipkaarten = ovChipkaarten;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
