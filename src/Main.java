@@ -1,89 +1,50 @@
-import java.sql.*;
-import java.util.List;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
+import java.sql.SQLException;
 
 public class Main {
+    private static final SessionFactory factory ;
+
+    static{
+        try {
+            factory = new Configuration().configure().buildSessionFactory();
+        } catch (Throwable ex) {
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+    private static Session getSession() throws HibernateException{
+        return factory.openSession();
+    }
 
     public static void main(String[] args) throws SQLException{
-        String dbUrl = "jdbc:postgresql://localhost:5432/ovchip";
-        String user = "postgres";
-        String pass = "halloo";
+        testFetch();
+    }
 
-        Connection conn = DriverManager.getConnection(dbUrl, user, pass);
-
-        ReizigerDAOsql daOsql = new ReizigerDAOsql(conn);
-        testReizigerDAO(daOsql);
-
+    private static void testFetch() {
+        Session session = getSession();
         try {
-            conn.close();
-            if (conn.isClosed()) {
-                System.out.println("" +
-                        "de connectie is gestopt");
+            Metamodel metamodel = session.getSessionFactory().getMetamodel();
+            for (EntityType<?> entityType : metamodel.getEntities()) {
+                Query query = session.createQuery("from " + entityType.getName());
+
+                System.out.println("[Test] check de database voor alle " + entityType.getName() + " types: ");
+                for (Object o : query.list()) {
+                    System.out.println(o);
+                }
+                System.out.println();
             }
-        }catch (Exception e){
-            e.printStackTrace();
+        }   finally {
+            session.close();
         }
-
     }
 
 
 
-    private static void testReizigerDAO(ReizigerDAO rdao) throws SQLException {
-        System.out.println("\n---------- Test ReizigerDAO -------------");
-
-        List<Reiziger> reizigers = rdao.findAll();
-        System.out.println("[Test] ReizigerDAO.findAll() geeft de volgende reizigers:");
-        for (Reiziger r : reizigers) {
-            System.out.println(r);
-        }
-        System.out.println();
-
-        List<Reiziger> datums = rdao.findByGbDatum("2002-10-22");
-        System.out.println("[Test] ReizigerDAO.findByGbDatum() geeft de volgende reizigers:");
-        for (Reiziger d : datums){
-            System.out.println(d);
-        }
-        System.out.println();
-
-
-        Reiziger reiziger = rdao.findById(1);
-        System.out.println("[Test] ReizigerDAO.findByGbDatum() geeft de volgende persoon:");
-        System.out.println(reiziger);
-        System.out.println();
-
-        String gbdatum = "1981-03-14";
-        Reiziger sietske = new Reiziger(77, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
-        System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
-        rdao.save(sietske);
-        reizigers = rdao.findAll();
-        System.out.println(reizigers.size() + " reizigers\n");
-
-
-        // hieronder maak ik een nieuw persoon aan zodat ik mijn delete kan testen
-        String gebdatum = "2000-04-14";
-        Reiziger jan = new Reiziger(7, "j", "van de", "berg", java.sql.Date.valueOf(gebdatum));
-        System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
-        rdao.save(jan);
-        reizigers = rdao.findAll();
-        System.out.println(reizigers.size() + " reizigers\n");
-
-        System.out.println("[Test] " + jan.getVoorletters() + " " + jan.getTussenvoegsel() + " " + jan.getAchternaam() + " is verwijderd  ");
-
-        rdao.delete(jan);
-
-        // hieronder maak ik een nieuw persoon aan. vervolgens update ik dees via de update methode in de ReizigerDAOsql classen
-
-        String geboortedatum = "2000-04-12";
-        Reiziger kees = new Reiziger(8, "k", "", "mees", java.sql.Date.valueOf(geboortedatum));
-        System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
-        rdao.save(kees);
-        reizigers = rdao.findAll();
-        System.out.println(reizigers.size() + " reizigers\n");
-
-        int id = 8;
-        Reiziger keesie = new Reiziger(id, "k", "van", "huizen", java.sql.Date.valueOf(geboortedatum));
-        rdao.update(keesie);
-        System.out.println("[Test] " + kees.getVoorletters() + " " + kees.getTussenvoegsel() + " " + kees.getAchternaam() + " is geupdate naar: " +
-                "" + keesie.getVoorletters() + " " + keesie.getTussenvoegsel() + " " + keesie.getAchternaam());
-
-    }
 }

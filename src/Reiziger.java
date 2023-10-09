@@ -1,14 +1,27 @@
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
-
-public class Reiziger extends Main{
+@Entity
+@Table(name = "reiziger")
+public class Reiziger{
+    @Id
     private int id;
+    @Column
     private String voorletters;
     private String tussenvoegsel;
     private String achternaam;
     private java.sql.Date geboortedatum;
+    @OneToOne
+    @JoinColumn(name = "reiziger_id")
+    private Adres adres;
 
-    public Reiziger(int id, String vl, String tv, String an, java.sql.Date gb){
+    @OneToMany
+    @JoinColumn(name = "reiziger_id")
+    private List<OVChipkaart> ovChipkaarten = new ArrayList<>();
+
+    public Reiziger(int id, String vl, String tv, String an, Date gb){
         this.id = id;
         this.voorletters = vl;
         this.tussenvoegsel = tv;
@@ -56,14 +69,30 @@ public class Reiziger extends Main{
         this.geboortedatum = geboortedatum;
     }
 
+    public Adres getAdres() {
+        return adres;
+    }
+
+    public void setAdres(Adres adres) {
+        this.adres = adres;
+    }
+
+    public List<OVChipkaart> getOvChipkaart() {
+        return ovChipkaarten;
+    }
+
+    public void setOvChipkaart(List<OVChipkaart> ovChipkaart) {
+        this.ovChipkaarten = ovChipkaart;
+    }
+
+
     @Override
     public String toString() {
-        return "Reiziger{" +
-                "id=" + id +
-                ", voorletters='" + voorletters + '\'' +
-                ", tussenvoegsel='" + tussenvoegsel + '\'' +
-                ", achternaam='" + achternaam + '\'' +
-                ", geboortedatum=" + geboortedatum +
-                '}';
+        return "Reiziger_id = " + id + '\'' +
+                ", voorletters = '" + voorletters + '\'' +
+                ", tussenvoegsel = '" + tussenvoegsel + '\'' +
+                ", achternaam = '" + achternaam + '\'' +
+                ", geboortedatum = " + geboortedatum + '\n' +
+                ", adres = " + adres + '\n';
     }
 }
