@@ -1,3 +1,5 @@
+package main.java;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,29 +9,30 @@ import javax.persistence.*;
 @Table(name = "ov_chipkaart")
 public class OVChipkaart {
     @Id
+    @Column(name = "kaart_nummer")
     private int kaartNummer;
-    @Column
+    @Column(name = "geldig_tot")
     private java.sql.Date geldigTot;
     private int klasse;
     private int saldo;
-    private int reizigerId;
-    @ManyToOne
-    @JoinColumn(name = "reiziger_id", insertable = false, updatable = false)
+//    @ManyToOne
+//    @JoinColumn(name = "reiziger_id", insertable = false, updatable = false)
+    @Transient
     private Reiziger reiziger;
 
-    @ManyToMany
-    @JoinTable(name = "ov_chipkaart_product",
-    joinColumns = {@JoinColumn(name = "kaart_nummer")},
-    inverseJoinColumns = {@JoinColumn(name = "product_nummer")})
+//    @ManyToMany
+//    @JoinTable(name = "ov_chipkaart_product",
+//    joinColumns = {@JoinColumn(name = "kaart_nummer")},
+//    inverseJoinColumns = {@JoinColumn(name = "product_nummer")})
+    @Transient
     private List<Product> producten = new ArrayList<>();
 
 
-    public OVChipkaart(int kn, java.sql.Date gt, int ks, int sa, int rid){
+    public OVChipkaart(int kn, java.sql.Date gt, int ks, int sa){
         this.kaartNummer = kn;
         this.geldigTot = gt;
         this.klasse = ks;
         this.saldo = sa;
-        this.reizigerId = rid;
     }
 
     public OVChipkaart() {
@@ -68,13 +71,6 @@ public class OVChipkaart {
         this.saldo = saldo;
     }
 
-    public int getReizigerId() {
-        return reizigerId;
-    }
-
-    public void setReizigerId(int reizigerId) {
-        this.reizigerId = reizigerId;
-    }
 
     public Reiziger getReiziger() {
         return reiziger;
@@ -94,13 +90,12 @@ public class OVChipkaart {
 
     @Override
     public String toString() {
-        return "OVChipkaart{" +
+        return "main.java.OVChipkaart{" +
                 "kaartNummer=" + kaartNummer +
                 ", geldigTot=" + geldigTot +
                 ", klasse=" + klasse +
                 ", saldo=" + saldo +
-                ", reiziger=" + reiziger +
-                "Product(en)=" + producten +
+                "main.java.Product(en)=" + producten +
                 '}';
     }
 }

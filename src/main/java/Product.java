@@ -1,3 +1,7 @@
+package main.java;
+
+import main.java.OVChipkaart;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -6,12 +10,15 @@ import javax.persistence.*;
 @Table(name = "product")
 public class Product {
     @Id
+    @Column(name = "product_nummer")
     private int id;
     @Column
     private String naam;
     private String beschrijving;
     private double prijs;
-
+//    @ManyToMany(mappedBy = "producten", targetEntity = OVChipkaart.class)
+    @Transient
+    private List<OVChipkaart> ovChipkaarten;
 
 
     public Product(int id, String naam, String beschrijving, double prijs) {
@@ -24,8 +31,7 @@ public class Product {
     public Product() {
 
     }
-    @ManyToMany(mappedBy = "producten", targetEntity = OVChipkaart.class)
-    private List<OVChipkaart> ovChipkaarten;
+
 
     public int getId() {
         return id;
@@ -69,7 +75,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "main.java.Product{" +
                 "id=" + id +
                 ", naam='" + naam + '\'' +
                 ", beschrijving='" + beschrijving + '\'' +

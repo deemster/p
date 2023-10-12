@@ -1,3 +1,5 @@
+package main.java;
+
 import javax.persistence.*;
 
 
@@ -5,21 +7,20 @@ import javax.persistence.*;
 @Table(name = "adres")
 public class Adres{
     @Id
+    @Column(name = "adres_id")
     private int id;
-    @Column
     private String postcode;
     private String huisnummer;
     private String straat;
     private String woonplaats;
-    private int reizigerId;
 
-    public Adres(int id, String pc, String hn, String st, String wp, int rid){
+    public Adres(int id, String pc, String hn, String st, String wp){
         this.id = id;
         this.postcode = pc;
         this.huisnummer = hn;
         this.straat = st;
         this.woonplaats = wp;
-        this.reizigerId = rid;
+
     }
 
     public Adres() {
@@ -66,23 +67,16 @@ public class Adres{
         this.woonplaats = woonplaats;
     }
 
-    public int getReizigerId() {
-        return reizigerId;
-    }
 
-    public void setReizigerId(int reizigerId) {
-        this.reizigerId = reizigerId;
-    }
 
     @Override
     public String toString() {
-        return "Adres{" +
+        return "main.java.Adres{" +
                 "id=" + id +
                 ", postcode='" + postcode + '\'' +
                 ", huisnummer='" + huisnummer + '\'' +
                 ", straat='" + straat + '\'' +
                 ", woonplaats='" + woonplaats + '\'' +
-                "reiziger id='" + reizigerId + '\'' +
                 '}';
     }
 }

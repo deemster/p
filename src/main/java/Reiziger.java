@@ -1,3 +1,5 @@
+package main.java;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -7,18 +9,21 @@ import java.util.List;
 @Table(name = "reiziger")
 public class Reiziger{
     @Id
+    @Column(name = "reiziger_id")
     private int id;
     @Column
     private String voorletters;
     private String tussenvoegsel;
     private String achternaam;
     private java.sql.Date geboortedatum;
-    @OneToOne
-    @JoinColumn(name = "reiziger_id")
+//    @OneToOne
+//    @JoinColumn(name = "reiziger_id")
+    @Transient
     private Adres adres;
 
-    @OneToMany
-    @JoinColumn(name = "reiziger_id")
+//    @OneToMany
+//    @JoinColumn(name = "reiziger_id")
+    @Transient
     private List<OVChipkaart> ovChipkaarten = new ArrayList<>();
 
     public Reiziger(int id, String vl, String tv, String an, Date gb){
@@ -27,6 +32,10 @@ public class Reiziger{
         this.tussenvoegsel = tv;
         this.achternaam = an;
         this.geboortedatum = gb;
+    }
+
+    public Reiziger() {
+
     }
 
     public int getId() {

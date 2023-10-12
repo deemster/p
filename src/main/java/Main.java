@@ -1,11 +1,13 @@
+package main.java;
+
 import org.hibernate.HibernateException;
+import org.hibernate.Metamodel;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
 import java.sql.SQLException;
 
 public class Main {
@@ -19,11 +21,11 @@ public class Main {
         }
     }
 
-    private static Session getSession() throws HibernateException{
+    private static Session getSession() throws HibernateException {
         return factory.openSession();
     }
 
-    public static void main(String[] args) throws SQLException{
+    public static void main(String[] args) throws SQLException {
         testFetch();
     }
 
