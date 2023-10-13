@@ -1,4 +1,5 @@
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -9,6 +10,7 @@ public class Reiziger extends Main{
     private String achternaam;
     private java.sql.Date geboortedatum;
     private Adres adres;
+    private List<Adres> adressen = new ArrayList<>();
 
     public Reiziger(int id, String vl, String tv, String an, Date gb){
         this.id = id;
@@ -67,6 +69,14 @@ public class Reiziger extends Main{
 
     public void setAdres(Adres adres) {
         this.adres = adres;
+    }
+
+    public List<Adres> getAdressen() {
+        return adressen;
+    }
+
+    public void setAdressen(List<Adres> adressen) {
+        this.adressen = adressen;
     }
 
     @Override

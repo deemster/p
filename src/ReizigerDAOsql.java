@@ -24,6 +24,9 @@ public class ReizigerDAOsql implements  ReizigerDAO{
             save.setString(4, reiziger.getAchternaam());
             save.setObject(5, reiziger.getGeboortedatum());
             save.executeUpdate();
+            for (Adres a : reiziger.getAdressen()){
+                adao.save(a);
+            }
             uitvoer = true;
         }catch (SQLException sq){
             System.err.println("verkeerde sql " + sq.getMessage());
@@ -43,6 +46,9 @@ public class ReizigerDAOsql implements  ReizigerDAO{
             update.setObject(4, reiziger.getGeboortedatum());
             update.setInt(5, reiziger.getId());
             update.executeUpdate();
+            for (Adres a : reiziger.getAdressen()){
+                adao.save(a);
+            }
             uitvoer = true;
         }catch (SQLException sq){
             System.err.println("verkeerde sql " + sq.getMessage());
@@ -58,6 +64,9 @@ public class ReizigerDAOsql implements  ReizigerDAO{
             PreparedStatement delete = conn.prepareStatement("DELETE FROM reiziger WHERE reiziger_id=?");
             delete.setObject(1, reiziger.getId());
             delete.executeUpdate();
+            for (Adres a : reiziger.getAdressen()){
+                adao.save(a);
+            }
             uitvoer = true;
         }catch (SQLException sq){
             System.err.println("verkeerde sql " + sq.getMessage());
