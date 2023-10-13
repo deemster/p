@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +33,6 @@ public class ProductDAOsql implements ProductDAO{
             }
             uitvoer = true;
 
-
-
         }  catch (SQLException sq){
             System.err.println("verkeerde sql " + sq.getMessage());
         }
@@ -55,6 +50,19 @@ public class ProductDAOsql implements ProductDAO{
             update.setString(3, product.getBeschrijving());
             update.setDouble(4, product.getPrijs());
             update.executeUpdate();
+
+            PreparedStatement delete = conn.prepareStatement("DELETE FROM ov_chipkaart_product WHERE product_nummer=?");
+            delete.setInt(1, product.getId());
+            delete.executeUpdate();
+
+            PreparedStatement insert = conn.prepareStatement("INSERT INTO  Ov_chipkaart_product VALUES (?, ?, ?, ?)");
+            for (OVChipkaart ovChipkaart : product.getOvChipkaarten()) {
+                insert.setInt(1, ovChipkaart.getKaartNummer());
+                insert.setInt(2, product.getId());
+                insert.setString(3, "gekocht");
+                insert.setDate(4, Date.valueOf(LocalDate.now()));
+                insert.executeUpdate();
+            }
             uitvoer = true;
         }catch (SQLException sq){
             System.err.println("verkeerde sql " + sq.getMessage());
@@ -80,6 +88,30 @@ public class ProductDAOsql implements ProductDAO{
             System.err.println("verkeerde sql " + sq.getMessage());
         }
         return uitvoer;
+    }
+
+    @Override
+    public List<Product> findByOVChipkaart(OVChipkaart ovChipkaart){
+        try {
+            PreparedStatement find = conn.prepareStatement("SELECT p.product_nummer, naam, beschrijving, prijs FROM ov_chipkaart_product ocp JOIN product p ON ocp.product_nummer = p.product_nummer WHERE ocp.kaart_nummer = ?");
+            find.setInt(1, ovChipkaart.getKaartNummer());
+            ResultSet resultSet = find.executeQuery();
+
+            ArrayList<Product> alles = new ArrayList<>();
+
+            while (resultSet.next()) {
+                int nummer =resultSet.getInt("product_nummer");
+                String naam = resultSet.getString("naam");
+                String beschrijving = resultSet.getString("beschrijving");
+                float prijs = resultSet.getFloat("prijs");
+                Product product = new Product(nummer, naam, beschrijving, prijs);
+                alles.add(product);
+            }
+            return alles;
+        } catch (SQLException sq){
+            System.err.println("verkeerde sql " + sq.getMessage());
+            return null;
+        }
     }
 
     @Override
