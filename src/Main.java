@@ -17,7 +17,7 @@ public class Main {
         testReizigerDAO(daOsql, odaOsql);
         testadresDAO(adaOsql, daOsql);
         testOVChipDAO(odaOsql, daOsql);
-        testProductDAO(pdaOsql);
+        testProductDAO(pdaOsql, daOsql, odaOsql);
 
 
 //        tes
@@ -197,7 +197,7 @@ public class Main {
         System.out.println("[Test] " + kaartje.getKaartNummer() + " " + kaartje.getGeldigTot() + " " + kaartje.getKlasse()  + " " + kaartje.getSaldo() + " is geupdate naar " +
                 " " + kaarte.getKaartNummer() + " " + kaarte.getGeldigTot() + " " + kaarte.getKlasse()  + " " + kaarte.getSaldo());
     }
-    private static void testProductDAO(ProductDAOsql pdaOsql) throws SQLException {
+    private static void testProductDAO(ProductDAOsql pdaOsql, ReizigerDAOsql rdao, OVChipkaartDAOsql odao) throws SQLException {
         System.out.println("\n---------- Test testOVChipDAO -------------");
 
         List<Product> producten = pdaOsql.findAll();
@@ -205,17 +205,18 @@ public class Main {
         for (Product p : producten) {
             System.out.println(p);
         }
+
         System.out.println();
-//        System.out.println("[Test] ProductDAO.findByReiziger() geeft de volgende chipkaart:");
-//        String geboorte = "2000-10-18";
-//        int reizigerID = 101;
-//        Reiziger kees = new Reiziger(reizigerID, "k", "van", "de steen", java.sql.Date.valueOf(geboorte));
-//        rdao.save(kees);
-//        int ovkaartnum = 34567;
-//        OVChipkaart ovkaart = new OVChipkaart(ovkaartnum, java.sql.Date.valueOf("2024-10-10"), 2, 20, kees.getId());
-//        odao.save(ovkaart);
-//        System.out.println(odao.findByReiziger(kees));
-//
+        System.out.println("[Test] ProductDAO.findByOVChipkaart() geeft de volgende Product:");
+        Reiziger reiziger = new Reiziger(92, "j", " ", "fietsband", java.sql.Date.valueOf("2004-10-10"));
+        rdao.save(reiziger);
+        OVChipkaart ovChipkaart = new OVChipkaart(99999, java.sql.Date.valueOf("2029-08-28"), 2, 25, reiziger.getId());
+        odao.save(ovChipkaart);
+        Product product1 = new Product(32, "prijsie", "wat een prijsie he", 20.00f);
+        product1.getOvChipkaarten().add(ovChipkaart);
+        pdaOsql.save(product1);
+        System.out.println(pdaOsql.findByOVChipkaart(ovChipkaart));
+
 
         Product product = new Product(20, "voordeelprod", "goedkoopste product op de markt", 20.00);
         System.out.print("[Test] Eerst " + producten.size() + " producten, na ProductDAO.save() ");

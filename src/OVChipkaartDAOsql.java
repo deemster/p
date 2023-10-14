@@ -4,11 +4,17 @@ import java.util.List;
 
 public class OVChipkaartDAOsql implements OVChipkaartDAO{
     Connection conn;
+    private ProductDAOsql pdao;
 
 
     public OVChipkaartDAOsql(Connection conn) throws SQLException{
         this.conn = conn;
     }
+
+    public void setPdao(ProductDAOsql pdao) {
+        this.pdao = pdao;
+    }
+
     @Override
     public boolean save(OVChipkaart ovchipkaart) throws SQLException{
         boolean uitvoer = false;
@@ -40,6 +46,7 @@ public class OVChipkaartDAOsql implements OVChipkaartDAO{
             update.setInt(3, ovchipkaart.getSaldo());
             update.setInt(4, ovchipkaart.getKaartNummer());
             update.executeUpdate();
+
             uitvoer = true;
         } catch (SQLException sq){
             System.err.println("verkeerde sql " + sq.getMessage());

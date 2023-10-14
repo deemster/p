@@ -116,19 +116,24 @@ public class ProductDAOsql implements ProductDAO{
 
     @Override
     public List<Product> findAll() throws SQLException {
-        List<Product> producten = new ArrayList<>();
-        PreparedStatement product = conn.prepareStatement("SELECT * FROM product");
-        ResultSet resultSet = product.executeQuery();
-        while (resultSet.next()){
-            int id = resultSet.getInt("product_nummer");
-            String naam = resultSet.getString("naam");
-            String beschrijving = resultSet.getString("beschrijving");
-            double prijs = resultSet.getDouble("prijs");
+        try {
+            List<Product> producten = new ArrayList<>();
+            PreparedStatement product = conn.prepareStatement("SELECT * FROM product");
+            ResultSet resultSet = product.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("product_nummer");
+                String naam = resultSet.getString("naam");
+                String beschrijving = resultSet.getString("beschrijving");
+                double prijs = resultSet.getDouble("prijs");
 
-            Product productje = new Product(id, naam, beschrijving, prijs);
-            producten.add(productje);
+                Product productje = new Product(id, naam, beschrijving, prijs);
+                producten.add(productje);
+            }
+            return producten;
+        }  catch (SQLException sq){
+            System.err.println("verkeerde sql " + sq.getMessage());
+            return null;
         }
-        return  producten;
     }
 
 
