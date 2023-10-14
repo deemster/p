@@ -1,5 +1,3 @@
-package main.java;
-
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +13,14 @@ public class OVChipkaart {
     private java.sql.Date geldigTot;
     private int klasse;
     private int saldo;
-//    @ManyToOne
-//    @JoinColumn(name = "reiziger_id", insertable = false, updatable = false)
-    @Transient
+    @ManyToOne
+    @JoinColumn(name = "reiziger_id", insertable = false, updatable = false)
     private Reiziger reiziger;
 
-//    @ManyToMany
-//    @JoinTable(name = "ov_chipkaart_product",
-//    joinColumns = {@JoinColumn(name = "kaart_nummer")},
-//    inverseJoinColumns = {@JoinColumn(name = "product_nummer")})
-    @Transient
+    @ManyToMany
+    @JoinTable(name = "ov_chipkaart_product",
+    joinColumns = {@JoinColumn(name = "kaart_nummer")},
+    inverseJoinColumns = {@JoinColumn(name = "product_nummer")})
     private List<Product> producten = new ArrayList<>();
 
 

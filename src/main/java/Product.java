@@ -1,6 +1,3 @@
-package main.java;
-
-import main.java.OVChipkaart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +13,7 @@ public class Product {
     private String naam;
     private String beschrijving;
     private double prijs;
-//    @ManyToMany(mappedBy = "producten", targetEntity = OVChipkaart.class)
+    @ManyToMany(mappedBy = "producten", targetEntity = OVChipkaart.class)
     @Transient
     private List<OVChipkaart> ovChipkaarten;
 

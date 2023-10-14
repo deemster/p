@@ -12,10 +12,10 @@
 
 
 
-        <mapping class="main.java.Reiziger"/>
-        <mapping class="main.java.Adres"/>
-        <mapping class="main.java.OVChipkaart"/>
-        <mapping class="main.java.Product"/>
+        <mapping class="Reiziger"/>
+        <mapping class="Adres"/>
+        <mapping class="OVChipkaart"/>
+        <mapping class="Product"/>
 
 
     </session-factory>

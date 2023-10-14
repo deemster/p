@@ -1,5 +1,3 @@
-package main.java;
-
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -16,13 +14,13 @@ public class Reiziger{
     private String tussenvoegsel;
     private String achternaam;
     private java.sql.Date geboortedatum;
-//    @OneToOne
-//    @JoinColumn(name = "reiziger_id")
+    @OneToOne
+    @JoinColumn(name = "reiziger_id")
     @Transient
     private Adres adres;
 
-//    @OneToMany
-//    @JoinColumn(name = "reiziger_id")
+    @OneToMany
+    @JoinColumn(name = "reiziger_id")
     @Transient
     private List<OVChipkaart> ovChipkaarten = new ArrayList<>();
 
