@@ -1,22 +1,22 @@
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class AdresDAOHibernate  implements AdresDAO{
-    private Session session;
+public class ReizigerDAOHibernate implements ReizigerDAO{
+    private final Session session;
 
-    public AdresDAOHibernate(Session session) {
+    public ReizigerDAOHibernate(Session session) {
         this.session = session;
     }
 
     @Override
-    public boolean save(Adres adres){
+    public boolean save(Reiziger reiziger) {
         boolean uitslag;
         try {
             Transaction transaction = this.session.beginTransaction();
-            session.save(adres);
+            session.save(reiziger);
             transaction.commit();
             uitslag = true;
         } catch (Exception e) {
@@ -27,14 +27,14 @@ public class AdresDAOHibernate  implements AdresDAO{
     }
 
     @Override
-    public boolean update(Adres adres) {
+    public boolean update(Reiziger reiziger) {
         boolean uitslag;
         try {
             Transaction transaction = this.session.beginTransaction();
-            session.update(adres);
+            session.update(reiziger);
             transaction.commit();
             uitslag = true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("de error luid: " + e.getMessage());
             uitslag = false;
         }
@@ -42,14 +42,14 @@ public class AdresDAOHibernate  implements AdresDAO{
     }
 
     @Override
-    public boolean delete(Adres adres) {
+    public boolean delete(Reiziger reiziger) {
         boolean uitslag;
         try {
             Transaction transaction = this.session.beginTransaction();
-            session.delete(adres);
+            session.delete(reiziger);
             transaction.commit();
             uitslag = true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("de error luid: " + e.getMessage());
             uitslag = false;
         }
@@ -57,26 +57,40 @@ public class AdresDAOHibernate  implements AdresDAO{
     }
 
     @Override
-    public Adres findByReiziger(Reiziger reiziger) {
+    public Reiziger findById(int id) {
         try {
             Transaction transaction = this.session.beginTransaction();
-            Adres adres = session.createQuery("FROM Adres WHERE reiziger_Id = " + reiziger.getId(), Adres.class).getSingleResult();
+            Reiziger reiziger = session.createQuery(" FROM Reiziger WHERE id = " + id, Reiziger.class).getSingleResult();
             transaction.commit();
-            return adres;
+            return reiziger;
         }catch (Exception e) {
             System.out.println("de error luid: " + e.getMessage());
             return null;
         }
     }
 
+
+
     @Override
-    public List<Adres> findAll() {
+    public List<Reiziger> findByGbDatum(Date datum) {
         try {
             Transaction transaction = this.session.beginTransaction();
-            List<Adres> adressen = session.createQuery(" FROM Adres", Adres.class).getResultList();
-            List<Adres> adressen1 = new ArrayList<>(adressen);
+            List<Reiziger> reizigers = session.createQuery("FROM Reiziger WHERE geboortedatum  = " + datum, Reiziger.class).getResultList();
             transaction.commit();
-            return adressen1;
+            return reizigers;
+        } catch (Exception e) {
+            System.out.println("de error luid: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public List<Reiziger> findAll() {
+        try {
+            Transaction transaction = this.session.beginTransaction();
+            List<Reiziger> reizigers = session.createQuery("FROM Reiziger", Reiziger.class).getResultList();
+            transaction.commit();
+            return reizigers;
         } catch (Exception e) {
             System.out.println("de error luid: " + e.getMessage());
             return null;

@@ -13,6 +13,7 @@ public class OVChipkaart {
     private java.sql.Date geldigTot;
     private int klasse;
     private int saldo;
+    private int reizigerId;
     @ManyToOne
     @JoinColumn(name = "reiziger_id", insertable = false, updatable = false)
     private Reiziger reiziger;
@@ -24,11 +25,12 @@ public class OVChipkaart {
     private List<Product> producten = new ArrayList<>();
 
 
-    public OVChipkaart(int kn, java.sql.Date gt, int ks, int sa){
+    public OVChipkaart(int kn, java.sql.Date gt, int ks, int sa, int reizigerId){
         this.kaartNummer = kn;
         this.geldigTot = gt;
         this.klasse = ks;
         this.saldo = sa;
+        this.reizigerId = reizigerId;
     }
 
     public OVChipkaart() {
