@@ -59,7 +59,7 @@ public class OVChipkaartDAOHibernate implements OVChipkaartDAO{
     public List<OVChipkaart> findByReiziger(Reiziger reiziger) {
         try {
             Transaction transaction = this.session.beginTransaction();
-            List<OVChipkaart> ovChipkaarten = session.createQuery("FROM OVChipkaart WHERE id = " + reiziger.getId(), OVChipkaart.class).getResultList();
+            List<OVChipkaart> ovChipkaarten = session.createQuery("FROM OVChipkaart WHERE reiziger_Id = " + reiziger.getId(), OVChipkaart.class).getResultList();
             transaction.commit();
             return ovChipkaarten;
         } catch (Exception e) {

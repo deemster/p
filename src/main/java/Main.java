@@ -64,28 +64,80 @@ public class Main {
         Product product = new Product(8000, "P7 OPDRACHT", "DIT IS DUS VOOR DE P7 OPDRACHT", 40.50f);
 
 
-        Reiziger updated_reiziger = new Reiziger(8010, "T", "", "Bolhoeve", java.sql.Date.valueOf("2001-03-29"));
-        Adres updated_adres = new Adres(8010, "17SS", "14", "molenweg", "Koog aan de Zaan", updated_reiziger.getId());
-        OVChipkaart updated_ovChipkaart = new OVChipkaart(88899, java.sql.Date.valueOf("2030-09-30"), 2, 4000, updated_reiziger.getId());
-        Product updated_product = new Product(8000, "P7 OPDRACHT UPDATE", "DIT IS DUS DE UPDATE VOOR DE P7 OPDRACHT", 20.50f);
-
-
-        System.out.println("---------- Hieronder staat alles wat met Reiziger te maken heeft (behalve de delete) ----------");
-        System.out.println("----------  find all ----------");
+        System.out.println("------ alles omtrent Reiziger -----");
+        System.out.println("--- save en findAll methodes ---");
+        System.out.println(rdaoSQL.findAll());
+        rdaoSQL.save(reiziger);
+        System.out.println("--- na de save ---");
         System.out.println(rdaoSQL.findAll());
 
-        System.out.println("----------  save + findById ----------");
-        rdaoSQL.save(reiziger);
+
+        System.out.println("--- update en findById methodes ---");
+        reiziger.setAchternaam("berg");
+        rdaoSQL.update(reiziger);
         System.out.println(rdaoSQL.findById(reiziger.getId()));
 
-        System.out.println("---------- update + findByGbDatum ----------");
-        rdaoSQL.update(reiziger);
-        System.out.println(rdaoSQL.findByGbDatum(updated_reiziger.getGeboortedatum()));
-
-        System.out.println("---------- hieronder staat alles wat met Adres te maken heeft ----------");
-        System.out.println("---------- find all ----------");
+        System.out.println("\n------ alles omtrent Adres -----");
+        System.out.println("--- save en findAll methodes---");
+        System.out.println(adaoSQL.findAll());
+        adaoSQL.save(adres);
+        System.out.println("--- na de save ---");
         System.out.println(adaoSQL.findAll());
 
+        System.out.println("--- update + findByReiziger methodes ---");
+        adres.setHuisnummer("66");
+        adaoSQL.update(adres);
+        System.out.println(adaoSQL.findByReiziger(reiziger));
+
+        System.out.println("--- delete ---");
+        adaoSQL.delete(adres);
+        System.out.println(adaoSQL.findAll());
+
+
+        System.out.println("\n------ alles omtrent Product -----");
+        System.out.println("--- save + findAll ---");
+        System.out.println(pdaoSQL.findAll());
+        pdaoSQL.save(product);
+        System.out.println("--- na de save ---");
+        System.out.println(pdaoSQL.findAll());
+
+        System.out.println("--- na de update ---");
+        product.setPrijs(15.50f);
+        System.out.println(pdaoSQL.findAll());
+
+
+        System.out.println("\n\n------ alles wat met OVChipkaart heeft te maken -----");
+        System.out.println("--- na de save ---");
+        odaoSQL.save(ovChipkaart);
+        System.out.println(odaoSQL.findByReiziger(reiziger));
+
+        System.out.println("--- na de update ---");
+        ovChipkaart.setSaldo(1500);
+        odaoSQL.update(ovChipkaart);
+        System.out.println(odaoSQL.findByReiziger(reiziger));
+
+        System.out.println("--- voeg product aan ov toe ---");
+        ovChipkaart.getProducten().add(product);
+        odaoSQL.update(ovChipkaart);
+        System.out.println(odaoSQL.findByReiziger(reiziger));
+
+
+        System.out.println("\n\n----- DELETE EVERYTHING -----");
+
+        System.out.println("--- ovchipkaart gedelete ---");
+        odaoSQL.delete(ovChipkaart);
+
+        System.out.println("---- voordat het product is gedeleted ----");
+        System.out.println(pdaoSQL.findAll());
+        pdaoSQL.delete(product);
+        System.out.println("---- nadat het product is gedeleted ----");
+        System.out.println(pdaoSQL.findAll());
+
+        System.out.println("---- voordat de reiziger is gedeleted ----");
+        System.out.println(rdaoSQL.findById(reiziger.getId()));
+        rdaoSQL.delete(reiziger);
+        System.out.println("---- nadat de reiziger is gedelete ----");
+        System.out.println(rdaoSQL.findById(reiziger.getId()));
 
 
     }

@@ -13,7 +13,7 @@ public class OVChipkaart {
     private java.sql.Date geldigTot;
     private int klasse;
     private int saldo;
-    private int reizigerId;
+    private int reiziger_Id;
     @ManyToOne
     @JoinColumn(name = "reiziger_id", insertable = false, updatable = false)
     private Reiziger reiziger;
@@ -30,7 +30,7 @@ public class OVChipkaart {
         this.geldigTot = gt;
         this.klasse = ks;
         this.saldo = sa;
-        this.reizigerId = reizigerId;
+        this.reiziger_Id = reizigerId;
     }
 
     public OVChipkaart() {
@@ -86,6 +86,14 @@ public class OVChipkaart {
         this.producten = producten;
     }
 
+    public int getReiziger_Id() {
+        return reiziger_Id;
+    }
+
+    public void setReiziger_Id(int reiziger_Id) {
+        this.reiziger_Id = reiziger_Id;
+    }
+
     @Override
     public String toString() {
         return "main.java.OVChipkaart{" +
@@ -93,7 +101,8 @@ public class OVChipkaart {
                 ", geldigTot=" + geldigTot +
                 ", klasse=" + klasse +
                 ", saldo=" + saldo +
-                "main.java.Product(en)=" + producten +
+                " reiziger_d=" + reiziger_Id +
+                " main.java.Product(en)=" + producten +
                 '}';
     }
 }
