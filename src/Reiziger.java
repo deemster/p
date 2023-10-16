@@ -11,6 +11,7 @@ public class Reiziger extends Main{
     private java.sql.Date geboortedatum;
     private Adres adres;
     private List<Adres> adressen = new ArrayList<>();
+    private List<OVChipkaart> ovChipkaarten = new ArrayList<>();
 
     public Reiziger(int id, String vl, String tv, String an, Date gb){
         this.id = id;
@@ -77,6 +78,14 @@ public class Reiziger extends Main{
 
     public void setAdressen(List<Adres> adressen) {
         this.adressen = adressen;
+    }
+
+    public List<OVChipkaart> getOvChipkaarten() {
+        return ovChipkaarten;
+    }
+
+    public void setOvChipkaarten(List<OVChipkaart> ovChipkaarten) {
+        this.ovChipkaarten = ovChipkaarten;
     }
 
     @Override

@@ -11,9 +11,13 @@ public class Main {
         Connection conn = DriverManager.getConnection(dbUrl, user, pass);
 
         ReizigerDAOsql daOsql = new ReizigerDAOsql(conn);
-        testReizigerDAO(daOsql);
+        OVChipkaartDAOsql odaOsql = new OVChipkaartDAOsql(conn);
         AdresDAOsql adaOsql = new AdresDAOsql(conn);
+        testReizigerDAO(daOsql, odaOsql);
         testadresDAO(adaOsql, daOsql);
+        testOVChipDAO(odaOsql, daOsql);
+
+//        tes
         try {
             conn.close();
             if (conn.isClosed()) {
@@ -26,9 +30,7 @@ public class Main {
 
     }
 
-
-
-    private static void testReizigerDAO(ReizigerDAO rdao) throws SQLException {
+    private static void testReizigerDAO(ReizigerDAO rdao, OVChipkaartDAO odao) throws SQLException {
         System.out.println("\n---------- Test ReizigerDAO -------------");
 
         List<Reiziger> reizigers = rdao.findAll();
@@ -46,12 +48,16 @@ public class Main {
         System.out.println();
 
 
+
+
+
         Reiziger reiziger = rdao.findById(1);
         System.out.println("[Test] ReizigerDAO.findByGbDatum() geeft de volgende persoon:");
         System.out.println(reiziger);
         System.out.println();
 
         String gbdatum = "1981-03-14";
+
         Reiziger sietske =  new Reiziger(77, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
         rdao.save(sietske);
@@ -61,7 +67,7 @@ public class Main {
 
         // hieronder maak ik een nieuw persoon aan zodat ik mijn delete kan testen
         String gebdatum = "2000-04-14";
-        Reiziger jan = new Reiziger(7, "j", "van de", "berg", java.sql.Date.valueOf(gebdatum));
+        Reiziger jan = new Reiziger(7, "j", "van de", "berg", java.sql.Date.valueOf(gebdatum) );
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
         rdao.save(jan);
         reizigers = rdao.findAll();
@@ -74,7 +80,7 @@ public class Main {
         // hieronder maak ik een nieuw persoon aan. vervolgens update ik dees via de update methode in de ReizigerDAOsql classen
 
         String geboortedatum = "2000-04-12";
-        Reiziger kees = new Reiziger(8, "k", "", "mees", java.sql.Date.valueOf(geboortedatum));
+        Reiziger kees = new Reiziger(8, "k", "", "mees", java.sql.Date.valueOf(geboortedatum) );
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
         rdao.save(kees);
         reizigers = rdao.findAll();
@@ -96,7 +102,6 @@ public class Main {
             System.out.println(a);
         }
         System.out.println();
-
         System.out.println("[Test] AdresDAO.findByReiziger() geeft de volgende persoon:");
         String geboorte = "2000-10-18";
         int reizigerID = 123;
@@ -106,7 +111,6 @@ public class Main {
         Adres zoutstraat = new Adres(adresID, "2435HJ", "10", "zoutstraat", "bergen op zoom", frank.getId());
         adao.save(zoutstraat);
         System.out.println(adao.findByReiziger(frank));
-
 
         Adres bergstraat = new Adres(6, "1563GG", "67", "bergstraat", "Zaandam", 8);
         System.out.print("[Test] Eerst " + adres.size() + " adressen, na AdresDAO.save() ");
@@ -138,9 +142,57 @@ public class Main {
         adao.update(krants);
         System.out.println("[Test] " + krantsteeg.getPostcode() + " " + krantsteeg.getHuisnummer() + " " + krantsteeg.getStraat()  + " " + krantsteeg.getReizigerId() + " is geupdate naar " +
                 " " + krants.getPostcode() + " " + krants.getHuisnummer() + " " + krants.getStraat() +  " " + krants.getReizigerId());
-
     }
 
+    private static void testOVChipDAO(OVChipkaartDAO odao, ReizigerDAO rdao) throws SQLException {
+        System.out.println("\n---------- Test testOVChipDAO -------------");
 
+        List<OVChipkaart> ovchipkaart = odao.findAll();
+        System.out.println("[Test] OVChipkaartDAO.findAll() geeft de volgende chipkaart:");
+        for (OVChipkaart o : ovchipkaart) {
+            System.out.println(o);
+        }
+        System.out.println();
+        System.out.println("[Test] OVChipkaartDAO.findByReiziger() geeft de volgende chipkaart:");
+        String geboorte = "2000-10-18";
+        int reizigerID = 101;
+        Reiziger kees = new Reiziger(reizigerID, "k", "van", "de steen", java.sql.Date.valueOf(geboorte));
+        rdao.save(kees);
+        int ovkaartnum = 34567;
+        OVChipkaart ovkaart = new OVChipkaart(ovkaartnum, java.sql.Date.valueOf("2024-10-10"), 2, 20, kees.getId());
+        odao.save(ovkaart);
+        System.out.println(odao.findByReiziger(kees));
+
+
+        OVChipkaart ovChipkaart = new OVChipkaart(67568, java.sql.Date.valueOf("2024-11-20"), 1, 0, 5);
+        System.out.print("[Test] Eerst " + ovchipkaart.size() + " kaarten, na OVChipkaartDAO.save() ");
+        odao.save(ovChipkaart);
+        ovchipkaart = odao.findAll();
+        System.out.println(ovchipkaart.size() + " kaarten\n");
+
+        // hieronder maak ik een nieuw adres aan zodat ik mijn delete kan testen
+
+        OVChipkaart kaart = new OVChipkaart(38290, java.sql.Date.valueOf("2025-07-14"), 1, 50, 77);
+        System.out.print("[Test] Eerst " + ovchipkaart.size() + " kaarten, na OVChipkaartDAO.delete() ");
+        odao.save(kaart);
+        ovchipkaart = odao.findAll();
+        System.out.println(ovchipkaart.size() + " adressen\n");
+
+        System.out.println("[Test] " + kaart.getKaartNummer() + " " + kaart.getKlasse() + " "  + kaart.getSaldo() + " is verwijderd  ");
+
+        odao.delete(kaart);
+
+
+        OVChipkaart kaartje = new OVChipkaart(88573, java.sql.Date.valueOf("2030-12-12"), 2, 10, 8);
+        System.out.print("[Test] Eerst " + ovchipkaart.size() + " kaarten, na OVChipkaartDAO.save() ");
+        odao.save(kaartje);
+        ovchipkaart = odao.findAll();
+        System.out.println(ovchipkaart.size() + " kaarten\n");
+
+        OVChipkaart kaarte = new OVChipkaart(88573, java.sql.Date.valueOf("2033-12-31"), 2, 50, 8);
+        odao.update(kaarte);
+        System.out.println("[Test] " + kaartje.getKaartNummer() + " " + kaartje.getGeldigTot() + " " + kaartje.getKlasse()  + " " + kaartje.getSaldo() + " is geupdate naar " +
+                " " + kaarte.getKaartNummer() + " " + kaarte.getGeldigTot() + " " + kaarte.getKlasse()  + " " + kaarte.getSaldo());
+    }
 
 }

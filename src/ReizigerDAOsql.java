@@ -5,12 +5,13 @@ import java.util.List;
 public class ReizigerDAOsql implements  ReizigerDAO{
     private Connection conn;
     private final AdresDAOsql adao;
-
+    private final OVChipkaartDAOsql odao;
 
 
     public ReizigerDAOsql(Connection conn) throws SQLException {
         this.conn = conn;
         this.adao = new AdresDAOsql(conn);
+        this.odao = new OVChipkaartDAOsql(conn);
     }
 
     @Override
@@ -26,6 +27,9 @@ public class ReizigerDAOsql implements  ReizigerDAO{
             save.executeUpdate();
             for (Adres a : reiziger.getAdressen()){
                 adao.save(a);
+            }
+            for (OVChipkaart o : reiziger.getOvChipkaarten()) {
+                odao.save(o);
             }
             uitvoer = true;
         }catch (SQLException sq){
@@ -49,6 +53,9 @@ public class ReizigerDAOsql implements  ReizigerDAO{
             for (Adres a : reiziger.getAdressen()){
                 adao.save(a);
             }
+            for (OVChipkaart o : reiziger.getOvChipkaarten()) {
+                odao.update(o);
+            }
             uitvoer = true;
         }catch (SQLException sq){
             System.err.println("verkeerde sql " + sq.getMessage());
@@ -66,6 +73,9 @@ public class ReizigerDAOsql implements  ReizigerDAO{
             delete.executeUpdate();
             for (Adres a : reiziger.getAdressen()){
                 adao.save(a);
+            }
+            for (OVChipkaart o : reiziger.getOvChipkaarten()) {
+                odao.delete(o);
             }
             uitvoer = true;
         }catch (SQLException sq){
