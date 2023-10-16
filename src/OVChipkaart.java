@@ -1,6 +1,6 @@
 import java.sql.Date;
 
-public class OVChipkaart {
+public class OVChipkaart extends Main{
     private int kaartNummer;
     private java.sql.Date geldigTot;
     private int klasse;
